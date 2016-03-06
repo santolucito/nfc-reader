@@ -40,6 +40,8 @@ import com.google.common.collect.Iterables;
  */
 public class SmartPoster implements ParsedNdefRecord {
 
+    private static byte[] payload;
+    public byte[] getPayload(){ return payload;};
     /**
      * NFC Forum Smart Poster Record Type Definition section 3.2.1.
      *
@@ -100,6 +102,7 @@ public class SmartPoster implements ParsedNdefRecord {
     }
 
     public static SmartPoster parse(NdefRecord record) {
+        payload = record.getPayload();
         Preconditions.checkArgument(record.getTnf() == NdefRecord.TNF_WELL_KNOWN);
         Preconditions.checkArgument(Arrays.equals(record.getType(), NdefRecord.RTD_SMART_POSTER));
         try {

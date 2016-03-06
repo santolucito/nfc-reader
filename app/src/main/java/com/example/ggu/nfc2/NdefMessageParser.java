@@ -62,8 +62,9 @@ public class NdefMessageParser {
 				        text.setText(new String(record.getPayload()));
 				        return text;
 					}
-            		
-            	});
+                    public byte[] getPayload() {return record.getPayload();};
+
+                });
             }
         }
         return elements;

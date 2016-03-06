@@ -23,8 +23,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import android.view.*;
 import com.example.ggu.nfc2.record.ParsedNdefRecord;
+import com.example.ggu.nfc2.record.TextRecord;
+
+import android.view.*;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -40,7 +42,10 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import static com.example.ggu.nfc2.UserLookup.lookupUser;
 
 /**
  * An {@link Activity} which handles a broadcast of a new tag that the device just discovered.
@@ -279,17 +284,32 @@ public class TagViewer extends Activity {
 
         // Parse the first message in the list
         // Build views for all of the sub records
-        Date now = new Date();
         List<ParsedNdefRecord> records = NdefMessageParser.parse(msgs[0]);
         final int size = records.size();
         for (int i = 0; i < size; i++) {
-            TextView timeView = new TextView(this);
-            timeView.setText(TIME_FORMAT.format(now));
-            content.addView(timeView, 0);
-            ParsedNdefRecord record = records.get(i);
-            content.addView(record.getView(this, inflater, content, i), 1 + i);
-            content.addView(inflater.inflate(R.layout.tag_divider, content, false), 2 + i);
+            String userData = lookupUser(records.get(i));
+            showUser(content, userData);
+            showRecord(inflater, content, records.get(i), i);
         }
+    }
+
+    private void showRecord(LayoutInflater inflater, LinearLayout content, ParsedNdefRecord record, int i) {
+        showTime(content);
+        content.addView(record.getView(this, inflater, content, i), 1 + i);
+        content.addView(inflater.inflate(R.layout.tag_divider, content, false), 2 + i);
+    }
+
+    private void showUser(LinearLayout content, String userData) {
+        TextView userView = new TextView(this);
+        userView.setText(userData);
+        content.addView(userView, 0);
+    }
+
+    private void showTime(LinearLayout content) {
+        Date now = new Date();
+        TextView timeView = new TextView(this);
+        timeView.setText(TIME_FORMAT.format(now));
+        content.addView(timeView, 0);
     }
 
     @Override

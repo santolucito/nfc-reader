@@ -42,6 +42,8 @@ public class UriRecord implements ParsedNdefRecord {
 
     public static final String RECORD_TYPE = "UriRecord";
 
+    private static byte[] payload;
+    public byte[] getPayload(){ return payload;};
     /**
      * NFC Forum "URI Record Type Definition"
      *
@@ -87,6 +89,7 @@ public class UriRecord implements ParsedNdefRecord {
             .put((byte) 0x23, "urn:nfc:")
             .build();
 
+
     private final Uri mUri;
 
     private UriRecord(Uri uri) {
@@ -112,6 +115,7 @@ public class UriRecord implements ParsedNdefRecord {
      *         containing a URI.
      */
     public static UriRecord parse(NdefRecord record) {
+        payload = record.getPayload();
         short tnf = record.getTnf();
         if (tnf == NdefRecord.TNF_WELL_KNOWN) {
             return parseWellKnown(record);

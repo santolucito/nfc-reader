@@ -33,6 +33,8 @@ import com.google.common.base.Preconditions;
  */
 public class TextRecord implements ParsedNdefRecord {
 
+    private static byte[] payload;
+    public byte[] getPayload(){ return payload;};
     /** ISO/IANA language code */
     private final String mLanguageCode;
 
@@ -62,6 +64,7 @@ public class TextRecord implements ParsedNdefRecord {
 
     // TODO: deal with text fields which span multiple NdefRecords
     public static TextRecord parse(NdefRecord record) {
+        payload = record.getPayload();
         Preconditions.checkArgument(record.getTnf() == NdefRecord.TNF_WELL_KNOWN);
         Preconditions.checkArgument(Arrays.equals(record.getType(), NdefRecord.RTD_TEXT));
         try {
