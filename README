@@ -4,4 +4,5 @@ The app is available on:
 * Google Play : https://play.google.com/store/apps/details?id=se.anyro.nfc_reader
 * F-Droid : https://f-droid.org/repository/browse/?fdid=se.anyro.nfc_reader
 
+This version uses Gradel and is compatible with the new Intelli-based Android Studio.
 If you have problem compiling the app make sure you have the /libs/guavalib.jar included in the build path.
